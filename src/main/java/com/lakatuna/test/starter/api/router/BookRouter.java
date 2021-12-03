@@ -44,7 +44,7 @@ public class BookRouter {
     bookRouter.get("/books/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.readOne()).handler(bookHandler::readOne);
     bookRouter.post("/books").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.create()).handler(bookHandler::create);
     bookRouter.put("/books/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.update()).handler(bookHandler::update);
-    bookRouter.put("books/logicdelete/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.logicDelete()).handler(bookHandler::logicDelete);
+    bookRouter.delete("/books/logicdelete/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.logicDelete()).handler(bookHandler::logicDelete);
     bookRouter.delete("/books/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.delete()).handler(bookHandler::delete);
 
     return bookRouter;

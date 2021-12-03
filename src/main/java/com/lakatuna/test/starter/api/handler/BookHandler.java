@@ -99,7 +99,8 @@ public class BookHandler {
 
     final Book book = new Book();
 
-    bookService.readOne(id).map(res -> {
+    return bookService.readOne(id).map(res -> {
+      System.out.println("Lee y asigna un libro");
       book.setId(res.getId());
       book.setAuthor(res.getAuthor());
       book.setCountry(res.getCountry());
@@ -111,11 +112,12 @@ public class BookHandler {
       book.setYear(res.getYear());
       book.setActive(false);
       return res;
-    });
+    }).onSuccess( s -> {
+      bookService.update(id, book)
+        .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
+        .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
+      }).onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
 
-    return bookService.update(id, book)
-      .onSuccess(success -> ResponseUtils.buildOkResponse(rc, success))
-      .onFailure(throwable -> ResponseUtils.buildErrorResponse(rc, throwable));
   }
 
   /**

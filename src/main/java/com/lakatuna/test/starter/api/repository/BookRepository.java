@@ -21,7 +21,8 @@ public class BookRepository {
   private static final String SQL_INSERT = "INSERT INTO books (id, author, country, image_link, language, link, pages, title, year) " +
     "VALUES (#{id}, #{author}, #{country}, #{image_link}, #{language}, #{link}, #{pages}, #{title}, #{year})";
   private static final String SQL_UPDATE = "UPDATE books SET author = #{author}, country = #{country}, image_link = #{image_link}, " +
-    "language = #{language}, link = #{link}, pages = #{pages}, title = #{title}, year = #{year} WHERE id = #{id}";
+    "language = #{language}, link = #{link}, pages = #{pages}, title = #{title}, year = #{year}, active = #{active} WHERE id = #{id}";
+  private static final String SQL_LOGIC_DELETE = "UPDATE books SET active = #{active} WHERE id = #{id}";
   private static final String SQL_DELETE = "DELETE FROM books WHERE id = #{id}";
   private static final String SQL_COUNT = "SELECT COUNT(*) AS total FROM books";
 
@@ -111,6 +112,7 @@ public class BookRepository {
       .execute(book)
       .flatMap(rowSet -> {
         if (rowSet.rowCount() > 0) {
+          System.out.println("book to logic delete: " + book.toString());
           return Future.succeededFuture(book);
         } else {
           throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(book.getId()));
@@ -118,6 +120,28 @@ public class BookRepository {
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Update book", SQL_UPDATE)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update book", throwable.getMessage())));
+  }
+
+  /**
+   * Update one book
+   *
+   * @param connection MySQL connection
+   * @param id       String
+   * @return Book
+   */
+  public Future<Void> logicDelete(SqlConnection connection, String id) {
+    return SqlTemplate
+      .forUpdate(connection, SQL_LOGIC_DELETE)
+      .execute(Collections.singletonMap("id", id))
+      .flatMap(rowSet -> {
+        if (rowSet.rowCount() > 0) {
+          LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Delete book", SQL_DELETE));
+          return Future.succeededFuture();
+        } else {
+          LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Delete book", LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id)));
+          throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
+        }
+      });
   }
 
   /**

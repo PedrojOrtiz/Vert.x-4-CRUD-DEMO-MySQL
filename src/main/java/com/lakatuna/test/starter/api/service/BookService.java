@@ -77,6 +77,7 @@ public class BookService {
    */
   public Future<BookGetByIdResponse> create(Book book) {
     book.setId(UUID.randomUUID().toString());
+    book.setActive(true);
     return dbClient.withTransaction(
         connection -> bookRepository.insert(connection, book)
           .map(BookGetByIdResponse::new))
@@ -99,6 +100,19 @@ public class BookService {
           .map(BookGetByIdResponse::new))
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Update one book", success)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Update one book", throwable.getMessage())));
+  }
+
+  /**
+   * Update one book
+   *
+   * @param id   Book ID
+   * @return BookGetByIdResponse
+   */
+  public Future<Void> logicDelete(String id) {
+    return dbClient.withTransaction(
+        connection -> bookRepository.logicDelete(connection, id))
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("LogicDelete one book", id)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("LogicDelete one book", throwable.getMessage())));
   }
 
   /**
