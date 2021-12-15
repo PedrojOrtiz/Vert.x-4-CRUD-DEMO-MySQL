@@ -2,27 +2,37 @@ package com.lakatuna.test.starter.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
 public class Book implements Serializable {
 
   @JsonProperty(value = "id")
+  @Id
   private String id;
 
   @JsonProperty(value = "author")
+  @Column(length = 50)
   private String author;
 
   @JsonProperty(value = "country")
+  @Column(length = 50)
   private String country;
 
   @JsonProperty(value = "image_link")
+  @Column(length = 300)
   private String imageLink;
 
   @JsonProperty(value = "language")
+  @Column(length = 20)
   private String language;
 
   @JsonProperty(value = "link")
+  @Column(length = 300)
   private String link;
 
   @JsonProperty(value = "pages")

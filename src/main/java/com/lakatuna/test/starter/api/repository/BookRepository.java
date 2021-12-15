@@ -91,7 +91,6 @@ public class BookRepository {
       .mapTo(Book.class)
       .execute(book)
       .map(rowSet -> {
-        //book.setId(UUID.randomUUID().toString());
         return book;
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Insert book", SQL_INSERT)))

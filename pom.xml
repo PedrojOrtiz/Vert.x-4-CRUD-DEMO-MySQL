@@ -26,6 +26,10 @@
     <main.verticle>com.lakatuna.test.starter.verticle.MainVerticle</main.verticle>
 
     <launcher.class>io.vertx.core.Launcher</launcher.class>
+
+    <hibernate-reactive-core.version>1.0.1.Final</hibernate-reactive-core.version>
+    <mutiny-vertx.version>2.14.2</mutiny-vertx.version>
+
   </properties>
 
   <dependencyManagement>
@@ -135,6 +139,42 @@
       <version>${junit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
+
+<!--    Hibernate Reactive-->
+
+    <dependency>
+      <groupId>org.hibernate.reactive</groupId>
+      <artifactId>hibernate-reactive-core</artifactId>
+      <version>${hibernate-reactive-core.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.smallrye.reactive</groupId>
+      <artifactId>smallrye-mutiny-vertx-core</artifactId>
+      <version>${mutiny-vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.smallrye.reactive</groupId>
+      <artifactId>smallrye-mutiny-vertx-web</artifactId>
+      <version>${mutiny-vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.smallrye.reactive</groupId>
+      <artifactId>smallrye-mutiny-vertx-pg-client</artifactId>
+      <version>${mutiny-vertx.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-mysql-client -->
+    <dependency>
+      <groupId>io.smallrye.reactive</groupId>
+      <artifactId>smallrye-mutiny-vertx-mysql-client</artifactId>
+      <version>${mutiny-vertx.version}</version>
+    </dependency>
+
+
+
+    <!--    / Hibernate Reactive-->
+
   </dependencies>
 
   <build>

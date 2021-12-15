@@ -21,4 +21,6 @@ public enum LogUtils {
     return String.format(message, argument);
   }
 
+
+
 }

@@ -7,8 +7,10 @@ import com.lakatuna.test.starter.api.repository.BookRepository;
 import com.lakatuna.test.starter.utils.LogUtils;
 import com.lakatuna.test.starter.utils.QueryUtils;
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.core.json.JsonObject;
 import io.vertx.mysqlclient.MySQLPool;
 
 import java.util.List;
@@ -18,40 +20,57 @@ import java.util.stream.Collectors;
 public class BookService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
+  private static final String BOOKS_QUEUE = "bus.books.queue";
 
   private final MySQLPool dbClient;
   private final BookRepository bookRepository;
+  private final Vertx vertx;
 
-  public BookService(MySQLPool dbClient, BookRepository bookRepository) {
+  public BookService(MySQLPool dbClient, BookRepository bookRepository, Vertx vertx) {
     this.dbClient = dbClient;
     this.bookRepository = bookRepository;
+    this.vertx = vertx;
   }
 
   public Future<BookGetAllResponse> readAll(String p, String l) {
 
     return dbClient.withTransaction(
-      connection -> {
+        connection -> {
 
-        final int page = QueryUtils.getPage(p);
-        final int limit = QueryUtils.getLimit(l);
-        final int offset = QueryUtils.getOffset(page, limit);
+          final int page = QueryUtils.getPage(p);
+          final int limit = QueryUtils.getLimit(l);
+          final int offset = QueryUtils.getOffset(page, limit);
 
-        return bookRepository.count(connection)
-          .flatMap(total ->
-            bookRepository.selectAll(connection, limit, offset)
-              .map(result -> {
-                final List<BookGetByIdResponse> books = result.stream()
-                  .map(BookGetByIdResponse::new)
-                  .collect(Collectors.toList());
+          return bookRepository.count(connection)
+            .flatMap(total ->
+              bookRepository.selectAll(connection, limit, offset)
+                .map(result -> {
+                  final List<BookGetByIdResponse> books = result.stream()
+                    .map(BookGetByIdResponse::new)
+                    .map(b -> {
+                      this.sendMessageToBooksQueue(b.getId());
+                      return b;
+                    })
+                    .collect(Collectors.toList());
 
-                return new BookGetAllResponse(total, limit, page, books);
+                  return new BookGetAllResponse(total, limit, page, books);
 
-              })
-          );
+                })
+            );
 
-      })
+        })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", success.getBooks())))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
+
+  }
+
+  public void sendMessageToBooksQueue(String bookId) {
+
+    if (!bookId.isBlank() || !bookId.isEmpty()) {
+      LOGGER.info("send message to " + BOOKS_QUEUE + " with book id: " + bookId);
+      this.vertx.eventBus().publish(BOOKS_QUEUE, new JsonObject().put("book_id", bookId));
+
+    }
 
   }
 
@@ -93,6 +112,7 @@ public class BookService {
    * @return BookGetByIdResponse
    */
   public Future<BookGetByIdResponse> update(String id, Book book) {
+
     book.setId(id);
 
     return dbClient.withTransaction(
@@ -103,9 +123,10 @@ public class BookService {
   }
 
   /**
-   * Update one book
+   * Logic delete one book
+   * no object response, just message
    *
-   * @param id   Book ID
+   * @param id Book ID
    * @return BookGetByIdResponse
    */
   public Future<Void> logicDelete(String id) {

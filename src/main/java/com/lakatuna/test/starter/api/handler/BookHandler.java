@@ -95,8 +95,8 @@ public class BookHandler {
    * @return BookGetByIdResponse
    */
   public Future<BookGetByIdResponse> logicDelete(RoutingContext rc) {
-    final String id = rc.pathParam(ID_PARAMETER);
 
+    final String id = rc.pathParam(ID_PARAMETER);
     final Book book = new Book();
 
     return bookService.readOne(id).map(res -> {

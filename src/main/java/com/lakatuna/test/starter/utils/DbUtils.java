@@ -28,6 +28,7 @@ public class DbUtils {
    * @return MySQL pool
    */
   public static MySQLPool buildDbClient(Vertx vertx) {
+
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
     final MySQLConnectOptions connectOptions = new MySQLConnectOptions()
