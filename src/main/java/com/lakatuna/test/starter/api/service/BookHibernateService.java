@@ -26,29 +26,31 @@ public class BookHibernateService {
     this.bookHibernateRepository = bookHibernateRepository;
   }
 
-  public Uni<BookGetAllResponse> readAll(String p, String l) {
+//  public Uni<BookGetAllResponse> readAll(String p, String l) {
+//
+//    final int page = QueryUtils.getPage(p);
+//    final int limit = QueryUtils.getLimit(l);
+//    final int offset = QueryUtils.getOffset(page, limit);
+//
+//    return this.bookHibernateRepository.count(Book.class)
+//      .flatMap(total ->
+//        this.bookHibernateRepository.findAllByLimitOffset(limit, offset)
+//          .map(result -> {
+//            final List<BookGetByIdResponse> books = result.stream()
+//              .map(BookGetByIdResponse::new).collect(Collectors.toList());
+//              return  new BookGetAllResponse(total, limit, page, books);
+//          })
+//      );
+//
+//  }
 
-    final int page = QueryUtils.getPage(p);
-    final int limit = QueryUtils.getLimit(l);
-    final int offset = QueryUtils.getOffset(page, limit);
+//  public Uni<Book> findById(String id) {
+//
+//    return this.bookHibernateRepository.get(id);
+//
+//  }
 
-    return this.bookHibernateRepository.count(Book.class)
-      .flatMap(total ->
-        this.bookHibernateRepository.findAllByLimitOffset(limit, offset)
-          .map(result -> {
-            final List<BookGetByIdResponse> books = result.stream()
-              .map(BookGetByIdResponse::new).collect(Collectors.toList());
-              return  new BookGetAllResponse(total, limit, page, books);
-          })
-      );
 
-  }
-
-  public Uni<Book> findById(String id) {
-
-    return this.bookHibernateRepository.findById(id);
-
-  }
 
 
 

@@ -73,19 +73,20 @@ public class MainVerticle extends AbstractVerticle {
 
 
 
-//    deployApiVerticle(vertx)
-//      .onSuccess(success -> LOGGER.info(LogUtils.RUN_APP_SUCCESSFULLY_MESSAGE.buildMessage(System.currentTimeMillis() - start)))
-//      .onFailure(throwable -> LOGGER.error(throwable.getMessage()));
+    deployApiVerticle(vertx)
+      .onSuccess(success -> LOGGER.info(LogUtils.RUN_APP_SUCCESSFULLY_MESSAGE.buildMessage(System.currentTimeMillis() - start)))
+      .onFailure(throwable -> LOGGER.error(throwable.getMessage()));
 
     System.out.println("Starting Hibernate Verticle");
 
     final io.vertx.mutiny.core.Vertx MVertx = io.vertx.mutiny.core.Vertx.vertx();
 
-    MVertx.deployVerticle(HibernateVerticle.class.getName()).subscribe().with(ok -> {
-        long vertxTime = System.currentTimeMillis();
+    DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("myPort", 3306));
+
+    MVertx.deployVerticle(HibernateVerticle::new, options).subscribe().with(  // <2>
+      ok -> {
         LOGGER.info("✅ Deployment success");
-      },
-      err -> LOGGER.error("🔥 Deployment failure", err));
+      }, err -> LOGGER.error("🔥 Deployment failure", err));
 
   }
 

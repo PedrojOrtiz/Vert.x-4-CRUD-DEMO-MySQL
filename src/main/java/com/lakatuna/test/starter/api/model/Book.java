@@ -1,18 +1,20 @@
 package com.lakatuna.test.starter.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Book")
 public class Book implements Serializable {
 
   @JsonProperty(value = "id")
   @Id
+  @GenericGenerator(name = "uuid_gen", strategy = "com.lakatuna.test.starter.utils.IdGenerator")
+  @GeneratedValue(generator = "uuid_gen")
   private String id;
 
   @JsonProperty(value = "author")
@@ -24,7 +26,7 @@ public class Book implements Serializable {
   private String country;
 
   @JsonProperty(value = "image_link")
-  @Column(length = 300)
+  @Column(name = "image_link", length = 300)
   private String imageLink;
 
   @JsonProperty(value = "language")

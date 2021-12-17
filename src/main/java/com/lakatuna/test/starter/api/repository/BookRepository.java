@@ -16,15 +16,15 @@ public class BookRepository {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
 
-  private static final String SQL_SELECT_ALL = "SELECT * FROM books LIMIT #{limit} OFFSET #{offset}";
-  private static final String SQL_SELECT_BY_ID = "SELECT * FROM books WHERE id = #{id}";
-  private static final String SQL_INSERT = "INSERT INTO books (id, author, country, image_link, language, link, pages, title, year) " +
+  private static final String SQL_SELECT_ALL = "SELECT * FROM ".concat(Book.class.getSimpleName()).concat(" LIMIT #{limit} OFFSET #{offset}");
+  private static final String SQL_SELECT_BY_ID = "SELECT * FROM Books WHERE id = #{id}";
+  private static final String SQL_INSERT = "INSERT INTO Books (id, author, country, image_link, language, link, pages, title, year) " +
     "VALUES (#{id}, #{author}, #{country}, #{image_link}, #{language}, #{link}, #{pages}, #{title}, #{year})";
-  private static final String SQL_UPDATE = "UPDATE books SET author = #{author}, country = #{country}, image_link = #{image_link}, " +
+  private static final String SQL_UPDATE = "UPDATE Books SET author = #{author}, country = #{country}, image_link = #{image_link}, " +
     "language = #{language}, link = #{link}, pages = #{pages}, title = #{title}, year = #{year}, active = #{active} WHERE id = #{id}";
-  private static final String SQL_LOGIC_DELETE = "UPDATE books SET active = #{active} WHERE id = #{id}";
-  private static final String SQL_DELETE = "DELETE FROM books WHERE id = #{id}";
-  private static final String SQL_COUNT = "SELECT COUNT(*) AS total FROM books";
+  private static final String SQL_LOGIC_DELETE = "UPDATE Books SET active = #{active} WHERE id = #{id}";
+  private static final String SQL_DELETE = "DELETE FROM Books WHERE id = #{id}";
+  private static final String SQL_COUNT = "SELECT COUNT(*) AS total FROM ".concat(Book.class.getSimpleName());
 
   public BookRepository() {
   }
@@ -173,7 +173,6 @@ public class BookRepository {
    */
   public Future<Integer> count(SqlConnection connection) {
     final RowMapper<Integer> ROW_MAPPER = row -> row.getInteger("total");
-
     return SqlTemplate
       .forQuery(connection, SQL_COUNT)
       .mapTo(ROW_MAPPER)

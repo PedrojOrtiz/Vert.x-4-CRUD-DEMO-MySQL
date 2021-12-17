@@ -35,8 +35,8 @@ public class DbUtils {
       .setPort(Integer.parseInt(properties.getProperty(PORT_CONFIG)))
       .setHost(properties.getProperty(HOST_CONFIG))
       .setDatabase(properties.getProperty(DATABASE_CONFIG))
-      .setUser(properties.getProperty(USERNAME_CONFIG));
-      //.setPassword(properties.getProperty(PASSWORD_CONFIG));
+      .setUser(properties.getProperty(USERNAME_CONFIG))
+      .setPassword(properties.getProperty(PASSWORD_CONFIG));
 
     final PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 

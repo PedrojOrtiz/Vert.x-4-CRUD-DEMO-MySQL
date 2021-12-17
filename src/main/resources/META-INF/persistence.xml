@@ -11,7 +11,7 @@
     <properties>
       <!-- MySQL | MariaDB -->
       <property name="javax.persistence.jdbc.url"
-                value="jdbc:mysql://mysql:3306/books"/>  <!--3-->
+                value="jdbc:mysql://localhost:3306/books"/>  <!--3-->
 
       <!-- Credentials -->
       <property name="javax.persistence.jdbc.user"
@@ -25,7 +25,7 @@
 
       <!-- Automatic schema export -->
       <property name="javax.persistence.schema-generation.database.action"
-                value="drop-and-create"/>
+                value="update"/>
 
       <!-- SQL statement logging -->
       <property name="hibernate.show_sql" value="true"/>
