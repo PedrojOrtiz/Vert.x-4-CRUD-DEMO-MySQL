@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.lakatuna.test</groupId>
@@ -29,6 +29,8 @@
 
     <hibernate-reactive-core.version>1.0.1.Final</hibernate-reactive-core.version>
     <mutiny-vertx.version>2.14.2</mutiny-vertx.version>
+
+    <assertj-core.version>3.22.0</assertj-core.version>
 
   </properties>
 
@@ -59,15 +61,16 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-client</artifactId>
-      <version>4.2.1</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+    <!-- https://mvnrepository.com/artifact/io.vertx/vertx-sql-common -->
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-      <version>${flyway.version}</version>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-sql-common</artifactId>
+      <version>3.9.12</version>
     </dependency>
+
+
 
     <!-- https://mvnrepository.com/artifact/io.vertx/vertx-sql-client-templates -->
     <dependency>
@@ -140,7 +143,7 @@
       <scope>test</scope>
     </dependency>
 
-<!--    Hibernate Reactive-->
+    <!--    Hibernate Reactive-->
 
     <dependency>
       <groupId>org.hibernate.reactive</groupId>
@@ -172,8 +175,14 @@
     </dependency>
 
 
-
     <!--    / Hibernate Reactive-->
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj-core.version}</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
@@ -186,6 +195,7 @@
           <release>11</release>
         </configuration>
       </plugin>
+
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>${maven-shade-plugin.version}</version>
@@ -212,6 +222,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>

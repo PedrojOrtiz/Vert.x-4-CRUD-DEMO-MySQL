@@ -47,7 +47,8 @@ public class Book implements Serializable {
   private Integer year;
 
   @JsonProperty(value = "active")
-  private Boolean active;
+  @Column(columnDefinition = "tinyint(1) DEFAULT 1")
+  private boolean active;
 
   //GETTERS & SETTERS
 
@@ -123,11 +124,11 @@ public class Book implements Serializable {
     this.year = year;
   }
 
-  public Boolean getActive() {
+  public boolean getActive() {
     return active;
   }
 
-  public void setActive(Boolean active) {
+  public void setActive(boolean active) {
     this.active = active;
   }
 

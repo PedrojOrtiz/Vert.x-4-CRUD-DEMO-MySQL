@@ -1,6 +1,5 @@
 package com.lakatuna.test.starter;
 
-import com.lakatuna.test.starter.verticle.HibernateVerticle;
 import com.lakatuna.test.starter.verticle.MainVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.logging.Logger;
@@ -16,9 +15,6 @@ public class Main {
 
     vertx.deployVerticle(MainVerticle.class.getName())
       .onFailure(throwable -> System.exit(-1));
-
-
-
 
   }
 

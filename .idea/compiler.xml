@@ -7,7 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="starter" />
+        <module name="Vert.x-4-CRUD-DEMO-MySQL" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Vert.x-4-CRUD-DEMO-MySQL" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

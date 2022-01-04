@@ -4,8 +4,8 @@ import io.vertx.core.Vertx;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
-import org.flywaydb.core.api.configuration.Configuration;
-import org.flywaydb.core.api.configuration.FluentConfiguration;
+//import org.flywaydb.core.api.configuration.Configuration;
+//import org.flywaydb.core.api.configuration.FluentConfiguration;
 
 import java.util.Properties;
 
@@ -48,12 +48,12 @@ public class DbUtils {
    *
    * @return Flyway configuration
    */
-  public static Configuration buildMigrationsConfiguration() {
-    final Properties properties = ConfigUtils.getInstance().getProperties();
-
-    final String url = "jdbc:mysql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
-
-    return new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
-  }
+//  public static Configuration buildMigrationsConfiguration() {
+//    final Properties properties = ConfigUtils.getInstance().getProperties();
+//
+//    final String url = "jdbc:mysql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+//
+//    return new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
+//  }
 
 }

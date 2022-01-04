@@ -81,7 +81,7 @@ public class MainVerticle extends AbstractVerticle {
 
     final io.vertx.mutiny.core.Vertx MVertx = io.vertx.mutiny.core.Vertx.vertx();
 
-    DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("myPort", 3306));
+    DeploymentOptions options = new DeploymentOptions().setConfig(new JsonObject().put("myPort", 3307));
 
     MVertx.deployVerticle(HibernateVerticle::new, options).subscribe().with(  // <2>
       ok -> {
@@ -90,16 +90,16 @@ public class MainVerticle extends AbstractVerticle {
 
   }
 
-  private Future<Void> deployMigrationVerticle(Vertx vertx) {
-    final DeploymentOptions options = new DeploymentOptions()
-      .setWorker(true)
-      .setWorkerPoolName("migrations-worker-pool")
-      .setInstances(1)
-      .setWorkerPoolSize(1);
-
-    return vertx.deployVerticle(MigrationVerticle.class.getName(), options)
-      .flatMap(vertx::undeploy);
-  }
+//  private Future<Void> deployMigrationVerticle(Vertx vertx) {
+//    final DeploymentOptions options = new DeploymentOptions()
+//      .setWorker(true)
+//      .setWorkerPoolName("migrations-worker-pool")
+//      .setInstances(1)
+//      .setWorkerPoolSize(1);
+//
+//    return vertx.deployVerticle(MigrationVerticle.class.getName(), options)
+//      .flatMap(vertx::undeploy);
+//  }
 
   private Future<String> deployApiVerticle(Vertx vertx) {
     return vertx.deployVerticle(ApiVerticle.class.getName());

@@ -44,15 +44,13 @@ public class BookHibernateRouter {
 
     final Router bookRouter = Router.router(vertx);
 
-    BodyHandler bodyHandler = BodyHandler.create();
-    bookRouter.post().handler(bodyHandler::handle);
-//    bookRouter.route("/books*").handler(BodyHandler.create());
-    bookRouter.get("/books").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(bookHibernateHandler::list);
+    bookRouter.route("/books*").handler(BodyHandler.create());
+
+    bookRouter.get("/books").respond(bookHibernateHandler::list);
     bookRouter.get("/books/:id").respond(bookHibernateHandler::findById);
     bookRouter.post("/books").respond(bookHibernateHandler::create);
-//    bookRouter.put("/books/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.update()).handler(bookHandler::update);
-//    bookRouter.delete("/books/logicdelete/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.logicDelete()).handler(bookHandler::logicDelete);
-//    bookRouter.delete("/books/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(bookValidationHandler.delete()).handler(bookHandler::delete);
+    bookRouter.delete("/books/:id").respond(bookHibernateHandler::delete);
+    bookRouter.put("/books").respond(bookHibernateHandler::update);
 
     return bookRouter;
 

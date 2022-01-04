@@ -34,7 +34,7 @@ public class HibernateVerticle extends AbstractVerticle {
 
     Uni<Void> startHibernate = Uni.createFrom().deferred(() -> {
 
-      var myPort = config().getInteger("myPort", 3306);
+      var myPort = config().getInteger("myPort", 3307);
       var props = Map.of("javax.persistence.jdbc.url",
         "jdbc:mysql://localhost:" + myPort + "/books");
 
